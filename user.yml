@@ -1,8 +1,8 @@
-- name: Catalogue setup
+- name: User setup
   hosts: all
   become: true
   vars:
-    component: catalogue
+    component: user
     schema: true
   tasks:
     - name: nodejs setup
