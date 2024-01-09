@@ -1,4 +1,4 @@
 - name: nodejs setup
   ansible.builtin.import_role:
     name: common
-    other: golang
+    tasks_from: golang
