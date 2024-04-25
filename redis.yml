@@ -1,0 +1,34 @@
+- name: Setup-redis
+  hosts: all
+  become: true
+  tasks:
+    - name: install redis repo
+      ansible.builtin.shell:
+        name: https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+        state: installed
+
+    - name: enable repo module
+      ansible.builtin.shell: dnf module enable redis:remi-6.2 -y
+
+    - name: Install redis
+      ansible.builtin.yum:
+        name: redi
+        state: installed
+
+    - name: Update listener port of redis /etc/redis.conf
+      ansible.builtin.replace:
+        path: /etc/redis.conf
+        regexp: '127.0.0.1'
+        replace: '0.0.0.0'
+
+    - name: Update listener port of redis /etc/redis/redis.conf
+      ansible.builtin.replace:
+        path: /etc/redis/redis.conf
+        regexp: '127.0.0.1'
+        replace: '0.0.0.0'
+
+    - name: start redis service
+      ansible.builtin.systemd:
+        name: redis
+        state: restarted
+        enabled: yes
