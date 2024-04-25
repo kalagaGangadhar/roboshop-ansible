@@ -5,14 +5,14 @@
 
 - name: disable nodejs
   ansible.builtin.shell: dnf module disable nodejs -y
+
+- name: enable nodejs
+  ansible.builtin.shell: dnf module enable nodejs:18 -y
+
 - name: Install nodejs
   ansible.builtin.yum:
     name: nodejs
     state: installed
-- name: enable nodejs
-  ansible.builtin.shell: dnf module disable nodejs -y
-
-
 
 - name: app-prerequisites
   ansible.builtin.import_tasks: app-preq.yml
