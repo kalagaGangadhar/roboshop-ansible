@@ -1,0 +1,8 @@
+- name: Install Mongo Client
+  ansible.builtin.yum:
+    name: mongodb-org-shell
+    state: installed
+
+- name: Load Mongo Schema
+  ansible.builtin.shell: mongo --host mongodb-dev.kroboshop.online </app/schema/{{component}}.js
+

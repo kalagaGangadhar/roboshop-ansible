@@ -1,0 +1,32 @@
+- name: Roboshop setup - redis
+  hosts: all
+  become: true
+  tasks:
+    - name: download remirepo for redis
+      ansible.builtin.shell: dnf install https://rpms.remirepo.net/enterprise/remi-release-8.rpm -y
+
+    - name: enable redis 6.2
+      ansible.builtin.shell: dnf module enable redis:remi-6.2 -y
+
+    - name: install redis
+      ansible.builtin.yum:
+        name: redis
+        state: installed
+
+    - name: replace Host address /etc/redis.conf
+      ansible.builtin.replace:
+        path: /etc/redis.conf
+        regexp: '127.0.0.1'
+        replace: '0.0.0.0'
+
+    - name: replace Host address /etc/redis/redis.conf
+      ansible.builtin.replace:
+        path: /etc/redis/redis.conf
+        regexp: '127.0.0.1'
+        replace: '0.0.0.0'
+
+    - name: start redis service
+      ansible.builtin.systemd:
+        name: redis
+        state: started
+        enabled: yes
